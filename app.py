@@ -16,7 +16,14 @@ CORS(app)
 @cross_origin(origin='*')
 def process_image_with_openai():
     try:
-        image = request.files.get('file')
+        # fix did not attempt to load JSON from the reques
+        json_data = request.get_json()
+        data = request.get_data()
+        print(data)
+        return jsonify({
+            "data": data,
+            "json_data": json_data
+        })
         if not image:
             return jsonify({
                 "result": "Image is required"
