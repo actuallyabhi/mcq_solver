@@ -1,10 +1,11 @@
 import os
-import tempfile
+import traceback
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 from query_openai import process_image
-import base64
+
+
 from helpers import load_json
 
 
@@ -16,30 +17,23 @@ CORS(app)
 @cross_origin(origin='*')
 def process_image_with_openai():
     try:
-        # fix did not attempt to load JSON from the reques
-        json_data = request.get_json()
-        data = request.get_data()
-        print(data)
-        return jsonify({
-            "data": data,
-            "json_data": json_data
-        })
-        if not image:
+        image_url = request.data
+        if not image_url:
             return jsonify({
-                "result": "Image is required"
+                "answer": "No image provided",
+                "reasoning": "No reasoning provided"
             })
-        with tempfile.NamedTemporaryFile(delete=True) as temp:
-            image.save(temp)
-            image_path = temp.name
-            with open(image_path, "rb") as img_file:
-                base64_img = base64.b64encode(img_file.read()).decode('utf-8')
-                result = process_image(base64_img)
-                answer, reasoning = load_json(result)
-                return jsonify({
-                        "answer": answer,
-                        "reasoning": reasoning
-                    })
+
+        result = process_image(image_url.decode("utf-8"))
+        answer, reasoning = load_json(result), ""
+        print(answer, reasoning)
+        return jsonify({
+                "answer": answer,
+                "reasoning": reasoning
+            })
+            
     except Exception as e:
+        traceback.print_exc()
         return jsonify({
             "answer": "Error occurred",
             "reasoning": str(e)
