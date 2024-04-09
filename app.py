@@ -17,7 +17,6 @@ CORS(app)
 def process_image_with_openai():
     try:
         print(request.files)
-        print(request.json)
         print(request.form)
         image = request.files.get('')
 
