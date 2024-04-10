@@ -16,7 +16,7 @@ def process_image(image_url):
             {
                 "role": "user",
                 "content": [
-                    {"type": "text", "text": "In the given image, There is MCQ question of Cognitive Aptitude Test.Return the correct answer. Do not return A,B or 1,2. Also provide the reasoning for the answer.\nResponse format should be in valid JSON object in following format. \n{\"answer\": \" 10KM/hour\", \"reasoning\": \"Because...\"}"},
+                    {"type": "text", "text": "In the given image, There is MCQ question.Return the correct answer. Do not return A,B or 1,2. Also provide the reasoning for the answer.\nResponse format should be in valid JSON object in following format. \n{\"answer\": \" 10KM/hour\", \"reasoning\": \"Because...\"}"},
                     {
                         "type": "image_url",
                         "image_url": {
